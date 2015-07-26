@@ -1,12 +1,13 @@
 class RandomTSP {
-  constructor(size, height, width) {
+  constructor(size, height, width, rng) {
     this.size = size;
     this.height = height;
     this.width = width;
+    this.rng = rng;
 
     this.nodes = [];
     this.edges = [];
-    this.matrix = [];
+    this.distances = [];
     this.initialised = false;
     this._initialise();
   }
@@ -39,14 +40,14 @@ class RandomTSP {
    */
   _createEdges() {
     for (let i = 0; i < this.size; i++) {
-      this.matrix[i] = [];
+      this.distances[i] = [];
       for (let j = 0; j < this.size; j++) {
         if (i !== j) {
           let len = Math.sqrt(
             Math.pow(this.nodes[i][0] - this.nodes[j][0], 2) +
             Math.pow(this.nodes[i][1] - this.nodes[j][1], 2)
           );
-          this.matrix[i][j] = len;
+          this.distances[i][j] = len;
           this.edges.push([i, j]);
         }
       }
@@ -61,8 +62,8 @@ class RandomTSP {
    * @return {Array}
    */
   _getPoint(height, width) {
-    var x = Math.round(Math.random() * height);
-    var y = Math.round(Math.random() * width);
+    var x = Math.round(this.rng() * height);
+    var y = Math.round(this.rng() * width);
     return [x, y];
   }
 }

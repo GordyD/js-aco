@@ -4,10 +4,10 @@ import Ant from './Ant.es6';
 var TIMEOUT = 50;
 
 class Colony {
-  constructor(popSize, maxIterations, heuristic, alpha, beta, pho, ip, Q) {
+  constructor(popSize, maxIterations, distances, alpha, beta, pho, ip, Q) {
     this.popSize = popSize;
     this.maxIterations = maxIterations;
-    this.heuristic = heuristic;
+    this.distances = distances;
 
     this.alpha = alpha;
     this.beta = beta;
@@ -42,9 +42,9 @@ class Colony {
       this.population[i] = new Ant(this.alpha, this.beta, this.Q);
     }
 
-    for(let x = 0; x < this.heuristic.length; x++) {
+    for(let x = 0; x < this.distances.length; x++) {
       this.pheromones[x] = [];
-      for(let y = 0; y < this.heuristic.length; y++) {
+      for(let y = 0; y < this.distances.length; y++) {
         if (x !== y) {
           this.pheromones[x][y] = this.ip;
         }
@@ -70,8 +70,8 @@ class Colony {
 
   sendOutAnts() {
     for(let i = 0; i < this.popSize; i++) {
-      console.log('Ant', i, this.population[i]);
-      this.population[i].doWalk(this.heuristic, this.pheromones);
+      //console.log('Ant', i, this.population[i]);
+      this.population[i].doWalk(this.distances, this.pheromones);
     }
   }
 
@@ -83,8 +83,8 @@ class Colony {
   }
 
   evaporatePheromones() {
-    for(let x = 0; x < this.heuristic.length; x++) {
-      for(let y = 0; y < this.heuristic.length; y++) {
+    for(let x = 0; x < this.distances.length; x++) {
+      for(let y = 0; y < this.distances.length; y++) {
         if (x !== y) {
           this.pheromones[x][y] = (1 - this.pho) * this.pheromones[x][y];
         } 

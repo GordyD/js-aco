@@ -1,10 +1,13 @@
 /* global d3 */
-
+import seedrandom from 'seedrandom';
 import Display from './Display.es6';
 import RandomTSP from './problems/RandomTSP.es6';
 import Colony from './aco/Colony.es6';
+import * as utils from './utils.es6';
 
-var nodeCount = 12;
+var seed = utils.getQueryParam('seed') || 'random!';
+var rng = seedrandom(seed);
+var nodeCount = parseInt(utils.getQueryParam('nodes'),10) || 25;
 var size = 500;
 var timeout = 0;
 var tsp;
@@ -14,7 +17,7 @@ var colony;
 create();
 
 function create() {
-  tsp = new RandomTSP(nodeCount, size, size);
+  tsp = new RandomTSP(nodeCount, size, size, rng);
   display = new Display(size, size);
   display.printGraph(tsp.nodes, tsp.edges);
   onIteration(0);
@@ -29,12 +32,12 @@ function onIteration(i, pheromones) {
   console.log('----- Iteration ' + i + ' -----');
   d3.select('.iterationCount').text('Iteration: ' + i);
   var matrix = [];
-  for(let i = 0; i <tsp.matrix.length; i++) {
+  for(let i = 0; i <tsp.distances.length; i++) {
     matrix[i] = [];
-    for(let j = 0; j < tsp.matrix[0].length; j++) {
+    for(let j = 0; j < tsp.distances[0].length; j++) {
       if (i !== j) {
         matrix[i][j] = [];
-        matrix[i][j].push(tsp.matrix[i][j]);
+        matrix[i][j].push(tsp.distances[i][j]);
         if (pheromones) {
           matrix[i][j].push(pheromones[i][j]);
         }
@@ -55,7 +58,7 @@ function run() {
 
   onIteration(0);
 
-  colony = new Colony(ants, iterations, tsp.matrix, alpha, beta, pho, pheromones, Q);
+  colony = new Colony(ants, iterations, tsp.distances, alpha, beta, pho, pheromones, Q);
 
   display.clearBest();
   display.printSettings(colony);

@@ -13,21 +13,21 @@ class Ant {
     this.base = base;
   }
 
-  doWalk(heuristic, pheromones) {
+  doWalk(distances, pheromones) {
     this.walk = [this.base];
     this.walkLength = null;
-    for(let i = 1; i < heuristic.length; i++) {
+    for(let i = 1; i < distances.length; i++) {
       //console.log(' [-] Choose Next ', i)
-      this.walk.push(this.chooseNext(this.walk[i-1], heuristic, pheromones));
+      this.walk.push(this.chooseNext(this.walk[i-1], distances, pheromones));
     }
     this.walk.push(this.walk[0]);
-    this.walkLength = this.calculateWalkLength(heuristic);
+    this.walkLength = this.calculateWalkLength(distances);
   }
 
-  chooseNext(currentNode, heuristic, pheromones) {
+  chooseNext(currentNode, distances, pheromones) {
     let sumall = 0;
     let unvisited = [];
-    for(let i = 0; i < heuristic.length; i++) {
+    for(let i = 0; i < distances.length; i++) {
       if (this.walk.indexOf(i) === -1) {
         unvisited.push(i);
       }
@@ -35,15 +35,15 @@ class Ant {
 
     for(let i = 0; i < pheromones.length; i++) {
       if (i !== currentNode && unvisited.indexOf(i) !== -1) {
-        sumall += Math.pow(pheromones[currentNode][i], this.alpha) * Math.pow(heuristic[currentNode][i], this.beta);
+        sumall += Math.pow(pheromones[currentNode][i], this.alpha) * Math.pow((1/distances[currentNode][i]), this.beta);
       }
     }
 
     let probs = [];
     let summul = 0;
-    for(let i = 0; i < heuristic[currentNode].length; i++) {
+    for(let i = 0; i < distances[currentNode].length; i++) {
       if (i !== currentNode && unvisited.indexOf(i) !== -1) {
-        let mul = Math.pow(pheromones[currentNode][i], this.alpha) * Math.pow(heuristic[currentNode][i], this.beta);
+        let mul = Math.pow(pheromones[currentNode][i], this.alpha) * Math.pow((1/distances[currentNode][i]), this.beta);
         probs.push(mul/sumall);
         summul += mul;
       }
@@ -61,11 +61,11 @@ class Ant {
     return unvisited[x];
   }
 
-  calculateWalkLength(heuristic) {
+  calculateWalkLength(distances) {
     let len = 0;
     for(let i = 1; i < this.walk.length; i++) {
       //console.log(' [x] Walk Length', len, 'for', i-1);
-      len += heuristic[this.walk[i-1]][this.walk[i]];
+      len += distances[this.walk[i-1]][this.walk[i]];
     }
     //console.log(' [x] Walk Length', len, 'for', this.walk.length -1 );
 
