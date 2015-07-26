@@ -1,0 +1,21 @@
+{
+  "name": "nature",
+  "main": "dist/js/all.js",
+  "version": "0.0.0",
+  "homepage": "http://github.com/gordyd",
+  "authors": [
+    "Gordon Dent <gordonmdent@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dist/js/components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.6"
+  }
+}

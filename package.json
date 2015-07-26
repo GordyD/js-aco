@@ -1,0 +1,36 @@
+{
+  "name": "nature",
+  "version": "1.0.0",
+  "description": "A collection of Naturally Inspired Algorithms for tackling Combinatorial Optimisation Problems",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "algorithms"
+  ],
+  "author": "Gordon Dent",
+  "license": "ISC",
+  "dependencies": {
+    "babel": "^4.5.1",
+    "lodash": "^3.10.0"
+  },
+  "devDependencies": {
+    "babelify": "^6.1.3",
+    "browserify": "^10.2.6",
+    "chai": "^2.1.0",
+    "chai-as-promised": "^4.2.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-util": "^3.0.6",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.7.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.2.3"
+  }
+}
