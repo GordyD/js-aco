@@ -13,4 +13,5 @@ The algorithm parameters can be tuned.
 ## To run
 
  - Run gulp `gulp`
+ - `cd dist`
  - Use something like `httpserver` and navigate to `http://localhost:8080`
