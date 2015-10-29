@@ -1,4 +1,5 @@
 /* global d3 */
+import bows from 'bows';
 import seedrandom from 'seedrandom';
 import Display from './Display.es6';
 import RandomTSP from './problems/RandomTSP.es6';
@@ -8,6 +9,8 @@ import * as utils from './utils.es6';
 var seed = utils.getQueryParam('seed') || 'random!';
 var rng = seedrandom(seed);
 var nodeCount = parseInt(utils.getQueryParam('nodes'),10) || 25;
+var iterationLog = bows('Iteration');
+var bestLog = bows('Optimum');
 var size = 500;
 var timeout = 0;
 var tsp;
@@ -16,20 +19,46 @@ var colony;
 
 create();
 
+
+/**
+ * Create random problem and set-up UI
+ */
 function create() {
+  if (utils.getQueryParam('debug') === 'true') {
+    localStorage.debug = true;
+  } else {
+    localStorage.removeItem('debug');
+  }
+
   tsp = new RandomTSP(nodeCount, size, size, rng);
   display = new Display(size, size);
   display.printGraph(tsp.nodes, tsp.edges);
   onIteration(0);
 }
 
+/**
+ * Handler for when a new best path is found
+ * 
+ * [onNewBest description]
+ * @param  {Number} i
+ * @param  {Array} walk
+ * @param  {Number} length
+ */
 function onNewBest(i, walk, length) {
+  bestLog(length);
   display.addBest(i, walk.join(', '), length);
   display.highlightOptimalWalk(walk);
 }
 
+/**
+ * Handler for when an iteration is complete
+ * 
+ * [onNewBest description]
+ * @param  {Number} i
+ * @param  {Array} pheromones
+ */
 function onIteration(i, pheromones) {
-  console.log('----- Iteration ' + i + ' -----');
+  iterationLog(i);
   d3.select('.iterationCount').text('Iteration: ' + i);
   var matrix = [];
   for(let i = 0; i <tsp.distances.length; i++) {
@@ -44,9 +73,14 @@ function onIteration(i, pheromones) {
       }
     }
   }
-  display.printMatrix(matrix);
+  //display.printMatrix(matrix);
+  display.printHeatMap(matrix, 0, 'distanceMatrix');
+  display.printHeatMap(matrix, 1, 'pheromoneMatrix');
 }
 
+/**
+ * Starts the process!
+ */
 function run() {
   let ants = parseInt(d3.select('.js-ants').property('value'), 10) || 20;
   let iterations = parseInt(d3.select('.js-iterations').property('value'), 10) || 100;

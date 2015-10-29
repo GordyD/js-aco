@@ -9,15 +9,26 @@ class Ant {
     this.walkLength = null;
   }
 
+  /**
+   * Set the base node for this ant
+   * 
+   * @param {Number} baseId
+   */
   setBase(base) {
     this.base = base;
   }
 
+  /**
+   * Construct a solution to the problem
+   * 
+   * @param  {Array} distances
+   * @param  {Array} pheromones
+   * @return {[type]}            [description]
+   */
   doWalk(distances, pheromones) {
     this.walk = [this.base];
     this.walkLength = null;
     for(let i = 1; i < distances.length; i++) {
-      //console.log(' [-] Choose Next ', i)
       this.walk.push(this.chooseNext(this.walk[i-1], distances, pheromones));
     }
     this.walk.push(this.walk[0]);
@@ -55,20 +66,17 @@ class Ant {
     while (rnd > tally && x < probs.length - 1) {
       tally += probs[++x];
     }
-    //console.log(' [x] Rnd', rnd, 'Tally', tally);
-    //console.log(' [x] Chosen details: ', 'x', x, 'unvisitedlength', unvisited.length);
-    //console.log(' [x] Chosen', unvisited[x]);
+    
     return unvisited[x];
   }
 
   calculateWalkLength(distances) {
     let len = 0;
     for(let i = 1; i < this.walk.length; i++) {
-      //console.log(' [x] Walk Length', len, 'for', i-1);
+      
       len += distances[this.walk[i-1]][this.walk[i]];
     }
-    //console.log(' [x] Walk Length', len, 'for', this.walk.length -1 );
-
+    
     return len;
   }
 

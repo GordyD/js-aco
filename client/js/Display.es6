@@ -1,4 +1,5 @@
 /* global d3 */
+import _ from 'lodash';
 
 class Display {
   constructor(height, width) {
@@ -29,7 +30,6 @@ class Display {
    * @return {[type]}       [description]
    */
   printGraph(nodes, edges) {
-    console.log('Print graph');
     d3.select('.graph').select('svg').remove();
     let chart = d3.select('.graph')
       .append('svg')
@@ -84,7 +84,7 @@ class Display {
    * @param {Number} length
    */
   addBest(iteration, walk, length) {
-    var rows = [iteration, walk, length];
+    var rows = [iteration, walk, length.toFixed(2)];
     d3.select('.bests').select('table').select('tbody')
     .append('tr')
     .selectAll('td')
@@ -101,8 +101,7 @@ class Display {
    * 
    * @param  {Array} matrix
    */
-  printMatrix(matrix) {
-    console.log('Print heuristic');
+  printNumberMatrix(matrix) {
     d3.select('.matrix').select('table').remove();
     let table = d3.select('.matrix').append('table').attr('class', 'pure-table pure-table-bordered'),
       thead = table.append('thead'),
@@ -140,6 +139,86 @@ class Display {
       .append('td')
       .html(function(d) {
         return (!!d.h) ? d.h.toFixed(2) + ((!!d.p) ? ' - ' + d.p.toFixed(2) : '') : 'X';
+      });
+  }
+
+  getMin(matrix, key) {
+    return _.reduce(matrix, (prev, row) => {
+      var mapped = _.map(row, (x) => {
+        if (!x) return Number.MAX_VALUE;
+        return x[key]
+      });
+
+      var rowMin = _.min(mapped);
+      
+      return (rowMin < prev) ? rowMin : prev;
+    }, Number.MAX_VALUE);
+  }
+
+  getMax(matrix, key) {
+    return _.reduce(matrix, (prev, row) => {
+      var rowMax = _.max(_.map(row, (x) => {
+        if (!x) return null;
+
+        return x[key]
+      }));
+      return (rowMax > prev) ? rowMax : prev;
+    }, 0)
+  }
+
+  printHeatMap(matrix, key, className) {
+    key = key || 0;
+    let colors = ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b'];
+
+    d3.select('.'+className).select('svg').remove();
+    let heatmap = d3.select('.'+className).append('svg')
+      .attr('height', this.height)
+      .attr('width', this.width);
+
+    let columns = columns = d3.range(1, matrix.length + 1);
+    let max = this.getMax(matrix, key);
+    let min = this.getMin(matrix, key);
+    let scale = d3.scale.linear().domain([min, max]).range([0,colors.length-1]);
+
+    let size = this.height/matrix.length;
+
+    // append the header row
+    let gs = heatmap
+      .selectAll('g')
+      .data(matrix)
+      .enter()
+      .append('g')
+      .attr('id', (d, i) => i) 
+      .attr('transform', (d, i) => { 
+        var x = (i * (size));
+        return `translate(${x}, 0)`;
+      });
+
+    // create a row for each object in the data
+    var rects = gs.selectAll('rect')
+      .data(function(row) {
+        return columns.map(function(column) {
+          return {
+            column: column,
+            0: (row[column-1]) ? row[column - 1][0] : false,
+            1: (row[column-1]) ?  row[column - 1][1] : false
+          };
+        });
+      })
+      .enter()
+      .append('rect')
+      .attr('class', 'heat-low')
+      .attr('y', (d, i) => { 
+        return (i * (size));
+      })
+      .attr('height', size)
+      .attr('width', size)
+      .attr('style', (d, i) => {
+        if (d[key] === false) {
+          return 'fill:white';
+        } else {
+          return 'fill:'+ colors[Math.round(scale(d[key]))];
+        }
       });
   }
 }

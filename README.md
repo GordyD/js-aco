@@ -1,6 +1,7 @@
 # js-aco
 
 An Ant Colony Optimisation demo written in Javascript (ES6). A basic example of how ACO works given a randomly generated TSP.
+
 The algorithm parameters can be tuned.
 
 ## Setup
@@ -10,8 +11,7 @@ The algorithm parameters can be tuned.
  - `npm install`
  - `bower install`
 
-## To run
+## To run in development
 
- - Run gulp `gulp`
- - `cd dist`
- - Use something like `httpserver` and navigate to `http://localhost:8080`
+ - Run `npm run develop`
+ - Go to `http://localhost:8080`

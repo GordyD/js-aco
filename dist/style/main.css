@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+body {
+  background-color: #dbdbdb;
+}
+
+div {
+  margin: 10px;
+}
+
+.controls {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  padding: 10px 0;
+  text-align: center;
+  background: rgba(8, 48, 107, 0.3);
+  border-bottom: 1px solid rgba(8, 48, 107, 0.4);
+}
+
+.controls form {
+  display: inline-block;
+  position: relative;
+  left: 0px;
+  padding-right: 5px;
+}
+
+.controls input[type="text"] {
+  width: 100px;
+}
+
+.controls button {
+  margin-right: 5px;
+}
+
+.problem {
+  margin: 0;
+  padding: 10px 0;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  background: #ededed;
+}
+
+.runtime {
+  padding: 10px 0;
+  margin: 10px 0 0;
+}
+
+.settings {
+  text-align: center;
+  display: block;
+}
+
+.settings div {
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.runtime .label {
+  font-weight: 300;
+}
+
+.graph, .pheromoneMatrix, .distanceMatrix {
+  display: block;
+}
+
+.graph svg {
+  background-color: white;
+  border: solid #cdcdcd 2px;
+}
+
+.bests table{
+  margin: 0 auto;
+}
+
+.graph .dot {
+  fill: #6baed6;
+}
+
+.graph .edge {
+  stroke: none;
+  stroke-width: 1px;
+  stroke-dasharray: 3px 5px
+}
+
+.graph .bestWalkEdge {
+  stroke: #08519c;
+  stroke-width: 2px;
+}
+
+.distanceMatrix svg, .pheromoneMatrix svg {
+  background-color: #AA3939;
+  border: solid #cdcdcd 2px;
+}
+
+.distanceMatrix svg rect, .pheromoneMatrix svg rect {
+  stroke-width: 1px;
+  stroke: #cdcdcd;
+  fill: white;
+}
