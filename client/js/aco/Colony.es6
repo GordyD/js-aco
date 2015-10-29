@@ -54,16 +54,17 @@ class Colony {
 
   iterate() {
     let x = 0, that = this;
-    while (x < this.maxIterations && this.continue) {
-      doWork(x);
-      x++;
-    }
+    doWork(x);
 
     function doWork(x) {
       setTimeout(function() {
         that.sendOutAnts();
         that.updatePheromones();
-        that.daemonActions(x+1);
+        x++;
+        that.daemonActions(x);
+        if (x < that.maxIterations && that.continue) {
+          doWork(x);
+        }
       }, TIMEOUT);
     }
   }
