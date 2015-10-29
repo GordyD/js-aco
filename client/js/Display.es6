@@ -29,7 +29,6 @@ class Display {
    * @return {[type]}       [description]
    */
   printGraph(nodes, edges) {
-    console.log('Print graph');
     d3.select('.graph').select('svg').remove();
     let chart = d3.select('.graph')
       .append('svg')
@@ -102,7 +101,6 @@ class Display {
    * @param  {Array} matrix
    */
   printMatrix(matrix) {
-    console.log('Print heuristic');
     d3.select('.matrix').select('table').remove();
     let table = d3.select('.matrix').append('table').attr('class', 'pure-table pure-table-bordered'),
       thead = table.append('thead'),
