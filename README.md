@@ -2,7 +2,7 @@
 
 An Ant Colony Optimisation demo written in Javascript (ES6). A basic example of how ACO works given a randomly generated TSP.
 
-[JS-ACO Screenshot](http://i.imgur.com/cYYpZtD.png)
+![JS-ACO Screenshot](http://i.imgur.com/cYYpZtD.png)
 
 ## Setup
 
