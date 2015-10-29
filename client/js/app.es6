@@ -33,7 +33,7 @@ function create() {
   tsp = new RandomTSP(nodeCount, size, size, rng);
   display = new Display(size, size);
   display.printGraph(tsp.nodes, tsp.edges);
-  //onIteration(0);
+  onIteration(0);
 }
 
 /**
@@ -73,7 +73,9 @@ function onIteration(i, pheromones) {
       }
     }
   }
-  display.printMatrix(matrix);
+  //display.printMatrix(matrix);
+  display.printHeatMap(matrix, 0, 'distanceMatrix');
+  display.printHeatMap(matrix, 1, 'pheromoneMatrix');
 }
 
 /**
