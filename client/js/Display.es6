@@ -7,6 +7,15 @@ class Display {
     this.width = width;
   }
 
+  setMax(max) {
+    this.max = max;
+  }
+
+  printProblemInfo(problem) {
+    d3.select('.problemInfo .problemName .value').html(problem.name);
+    d3.select('.problemInfo .problemSize .value').html(problem.size);
+  }
+
   /**
    * Print the current settings for the Ant Colony
    * 
@@ -25,16 +34,18 @@ class Display {
   /**
    * Draw the graph given a set of nodes and edges
    * 
-   * @param  {[type]} edges [description]
-   * @param  {[type]} nodes [description]
-   * @return {[type]}       [description]
+   * @param  {Array} edges
+   * @param  {Array} nodes
    */
   printGraph(nodes, edges) {
     d3.select('.graph').select('svg').remove();
+    let factor = this.max/this.height;
+
     let chart = d3.select('.graph')
       .append('svg')
       .attr('height', this.height)
-      .attr('width', this.width);
+      .attr('width', this.width)
+      .attr('viewBox', `-8 -8 ${this.max} ${this.max}`);
 
     let es = chart.selectAll('line').data(edges)
       .enter()
@@ -45,25 +56,44 @@ class Display {
       .attr('x2', (d) => nodes[d[1]][0])
       .attr('y2', (d) => nodes[d[1]][1])
 
+
+
     let ds = chart.selectAll('circle').data(nodes)
       .enter()
       .append('circle')
       .attr('class', 'dot')
       .attr('cx', (d) => d[0])
       .attr('cy', (d) => d[1])
-      .attr('r', 3);
+      .attr('r', 3*factor)
+      .on('mouseover', function(d, i) {
+        console.log(d, i);
+      });
   }
 
   highlightOptimalWalk(walk) {
-    d3.selectAll('.bestWalkEdge').classed('bestWalkEdge', false);
+    let factor = this.max/this.height;
+    var style = `stroke-width: ${2*factor}px; stroke-dasharray: ${3*factor}px ${5*factor}px`;
+    
+    // Make sure existing walk is cleared
+    this.clearHighlightedWalk();
 
     for(let i = 1; i < walk.length; i++) {
       let edgeClass = '.e-' + walk[i-1] + '-' + walk[i];
-      d3.select(edgeClass).classed('bestWalkEdge', true);
+      d3.select(edgeClass)
+        .classed('bestWalkEdge', true)
+        .attr('style', style);
     }
 
     let edgeClass = '.e-' + walk[walk.length-1] + '-' + walk[0];
-    d3.select(edgeClass).classed('bestWalkEdge', true);
+    d3.select(edgeClass)
+      .classed('bestWalkEdge', true)
+      .attr('style', style);;
+  }
+
+  clearHighlightedWalk() {
+    d3.selectAll('.bestWalkEdge')
+      .classed('bestWalkEdge', false)
+      .attr('style', 'stroke:none;');
   }
 
   /**
@@ -84,6 +114,8 @@ class Display {
    * @param {Number} length
    */
   addBest(iteration, walk, length) {
+    walk = walk.map(x => x+1);
+    walk = walk.join(' ,');
     var rows = [iteration, walk, length.toFixed(2)];
     d3.select('.bests').select('table').select('tbody')
     .append('tr')

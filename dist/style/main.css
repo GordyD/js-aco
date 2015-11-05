@@ -37,7 +37,7 @@ div {
   margin-right: 5px;
 }
 
-.problem {
+.problemVisual {
   margin: 0;
   padding: 10px 0;
   width: 100%;
@@ -52,17 +52,17 @@ div {
   margin: 10px 0 0;
 }
 
-.settings {
+.settings, .problemInfo {
   text-align: center;
   display: block;
 }
 
-.settings div {
+.settings div, .problemInfo div {
   display: inline-block;
   padding-right: 10px;
 }
 
-.runtime .label {
+.label {
   font-weight: 300;
 }
 
@@ -85,13 +85,10 @@ div {
 
 .graph .edge {
   stroke: none;
-  stroke-width: 1px;
-  stroke-dasharray: 3px 5px
 }
 
 .graph .bestWalkEdge {
   stroke: #08519c;
-  stroke-width: 2px;
 }
 
 .distanceMatrix svg, .pheromoneMatrix svg {

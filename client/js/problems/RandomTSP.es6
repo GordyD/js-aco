@@ -1,5 +1,6 @@
 class RandomTSP {
   constructor(size, height, width, rng) {
+    this.name = 'Random TSP';
     this.size = size;
     this.height = height;
     this.width = width;
@@ -10,6 +11,10 @@ class RandomTSP {
     this.distances = [];
     this.initialised = false;
     this._initialise();
+  }
+
+  getMaxCoordinateValue() {
+    return this.nodes.reduce((prev, node) => { return Math.max(...node, prev)} , 0);
   }
 
   /**
