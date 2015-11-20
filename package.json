@@ -12,7 +12,7 @@
     "algorithms"
   ],
   "author": "Gordon Dent",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "babel": "4.5.1",
     "bows": "^1.4.8",
