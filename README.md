@@ -6,9 +6,9 @@ The UI will show the current optimum tour, and also a heat map of the heuristic 
 
 ![JS-ACO Screenshot](http://i.imgur.com/WSlay5k.gif)
 
-I intend to:
- - add different ACO algorithms to this project
- - enable importing TSP problems from TSP lib
+## Demo
+
+You can see it in action [here](http://gordyd.github.io/js-aco/).
 
 ## Setup
 
@@ -23,3 +23,10 @@ I intend to:
  - Go to `http://localhost:8080`
  - To increase problem size set query param `nodes` to an Integer
  - To use a different seed set query param `seed` to a String or Number
+
+## Further Work
+
+I intend to:
+ - add other ACO algorithms to this library
+ - add further support for more formats of TSP problems found in [TSPLib](http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/)
+ - provide greater interactivity with visualisations
