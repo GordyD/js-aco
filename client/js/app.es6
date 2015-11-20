@@ -12,7 +12,7 @@ var problemFilename = utils.getQueryParam('problem') || null;
 var seed = utils.getQueryParam('seed') || 'random!';
 var problem = null;
 var rng = seedrandom(seed);
-var nodeCount = parseInt(utils.getQueryParam('nodes'),10) || 25;
+var nodeCount = parseInt(utils.getQueryParam('nodes'),10) || 20;
 var iterationLog = bows('Iteration');
 var bestLog = bows('Optimum');
 var size = 500;
@@ -40,6 +40,8 @@ function create(problem) {
   } else {
     localStorage.removeItem('debug');
   }
+
+  setProblemSelector()
 
   tsp = problem || new RandomTSP(nodeCount, size, size, rng);
   display = new Display(size, size);
@@ -72,7 +74,7 @@ function onNewBest(i, walk, length) {
  */
 function onIteration(i, pheromones) {
   iterationLog(i);
-  d3.select('.iterationCount').text('Iteration: ' + i);
+  d3.select('.iterationCount').text(i);
   var matrix = [];
   for(let i = 0; i < tsp.distances.length; i++) {
     matrix[i] = [];
@@ -89,6 +91,37 @@ function onIteration(i, pheromones) {
 
   display.printHeatMap(matrix, 0, 'distanceMatrix');
   display.printHeatMap(matrix, 1, 'pheromoneMatrix');
+}
+
+function updateProblem() {
+  let val = d3.select('.js-problem').property('value');
+  if (val.indexOf('random') === 0) {
+    var size = val.split('-').map(x=>x.trim())[1];
+    window.location = `/?nodes=${size}`;
+  } else {
+    window.location = `/?problem=${val}.tsp`;
+  }
+}
+
+function setProblemSelector() {
+  let checkOption = function(option, i) {
+    if (problemFilename) {
+      if (d3.select(this).attr('value') === problemFilename.split('.')[0]) {
+        d3.select(this).attr('selected', 'selected');
+      }
+    } else if (nodeCount) {
+      var split = d3.select(this).attr('value').split('-');
+      console.log(parseInt(split[1]) === nodeCount, parseInt(split[1]),  nodeCount)
+      if (parseInt(split[1]) === nodeCount) {
+        d3.select(this).attr('selected', 'selected');
+      }
+    }
+  }
+
+  var x = d3
+    .selectAll('.js-problem option')
+    .each(checkOption);
+
 }
 
 /**
@@ -124,6 +157,9 @@ d3.select('#refresh')
 
 d3.select('#run')
   .on('click', () => run());
+
+d3.select('.js-problem')
+  .on('change', () => updateProblem());
 
 
 
