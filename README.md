@@ -4,11 +4,12 @@ JS ACO is a visual demo of Ant Colony Optimisation written in Javascript (ES6). 
 
 The UI will show the current optimum tour, and also a heat map of the heuristic (distance) matrix plus a pheromone matrix. This information will update as the algorithm runs.
 
-![JS-ACO Screenshot](http://i.imgur.com/WSlay5k.gif)
-
 ## Demo
 
 You can see it in action [here](http://gordyd.github.io/js-aco/).
+
+![JS-ACO Screenshot](http://i.imgur.com/WSlay5k.gif)
+
 
 ## Setup
 
