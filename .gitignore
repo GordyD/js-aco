@@ -2,3 +2,5 @@ node_modules
 npm-debug.log
 dist/*
 !dist/style
+!dist/problems
+!dist/index.html
